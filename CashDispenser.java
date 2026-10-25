@@ -2,30 +2,61 @@
 // Represents the cash dispenser of the ATM
 
 public class CashDispenser {
-   // the default initial number of bills in the cash dispenser
-   private final static int INITIAL_COUNT = 500;
-   private int count; // number of $20 bills remaining
+    // the default initial number of Banknotes in the cash dispenser
+    private static final int HKD100_INITIAL_COUNT = 500;
+    private static final int HKD500_INITIAL_COUNT = 200;
+    private static final int HKD1000_INITIAL_COUNT = 100;
+    private int hkd100Count; // number of HKD 100 Banknotes remaining
+    private int hkd500Count; // number of HKD 500 Banknotes remaining
+    private int hkd1000Count; // number of HKD 1000 Banknotes remaining
 
-   // no-argument CashDispenser constructor initializes count to default
-   public CashDispenser() {
-      count = INITIAL_COUNT; // set count attribute to default
-   } // end CashDispenser constructor
+    // no-argument CashDispenser constructor initializes count to default
+    public CashDispenser() {
+        hkd100Count = HKD100_INITIAL_COUNT; // set count of HKD 100 Banknotes attribute to default
+        hkd500Count = HKD500_INITIAL_COUNT; // set count of HKD 500 Banknotes attribute to default
+        hkd1000Count = HKD1000_INITIAL_COUNT; // set count of HKD 1000 Banknotes attribute to default
+    } // end CashDispenser constructor
 
-   // simulates dispensing of specified amount of cash
-   public void dispenseCash(int amount) {
-      int billsRequired = amount / 20; // number of $20 bills required
-      count -= billsRequired; // update the count of bills
-   } // end method dispenseCash
+    public void dispenseCash(int amount) {
+        int amountToBeDispensed = amount;
 
-   // indicates whether cash dispenser can dispense desired amount
-   public boolean isSufficientCashAvailable(int amount) {
-      int billsRequired = amount / 20; // number of $20 bills required
+        int hkd1000BanknotesRequired = amountToBeDispensed / 1000;
+        hkd1000Count -= hkd1000BanknotesRequired;
+        amountToBeDispensed = amountToBeDispensed % 1000;
 
-      if (count >= billsRequired)
-         return true; // enough bills available
-      else
-         return false; // not enough bills available
-   } // end method isSufficientCashAvailable
+        int hkd500BanknotesRequired = amountToBeDispensed / 500;
+        hkd500Count -= hkd500BanknotesRequired;
+        amountToBeDispensed = amountToBeDispensed % 500;
+
+        int hkd100BanknotesRequired = amountToBeDispensed / 100;
+        hkd100Count -= hkd100BanknotesRequired;
+        amountToBeDispensed = amountToBeDispensed % 100;
+    }
+
+    // indicates whether cash dispenser can dispense desired amount
+    public boolean isSufficientCashAvailable(int amount) {
+        int amountToBeDispensed = amount;
+
+        int hkd1000BanknotesRequired = amountToBeDispensed / 1000;
+        if (hkd1000BanknotesRequired > hkd1000Count) {
+            return false;
+        }
+        amountToBeDispensed = amountToBeDispensed % 1000;
+
+        int hkd500BanknotesRequired = amountToBeDispensed / 500;
+        if (hkd500BanknotesRequired > hkd500Count) {
+            return false;
+        }
+        amountToBeDispensed = amountToBeDispensed % 500;
+
+        int hkd100BanknotesRequired = amountToBeDispensed / 100;
+        if (hkd100BanknotesRequired > hkd100Count) {
+            return false;
+        }
+        amountToBeDispensed = amountToBeDispensed % 100;
+
+        return amountToBeDispensed == 0;
+    } // end method isSufficientCashAvailable
 } // end class CashDispenser
 
 /**************************************************************************

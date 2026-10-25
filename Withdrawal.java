@@ -7,7 +7,8 @@ public class Withdrawal extends Transaction {
    private CashDispenser cashDispenser; // reference to cash dispenser
 
    // constant corresponding to menu option to cancel
-   private final static int CANCELED = 6;
+   private final static int CUSTOM = 6;
+   private final static int CANCELED = 7;
 
    // Withdrawal constructor
    public Withdrawal(int userAccountNumber, Screen atmScreen,
@@ -83,21 +84,23 @@ public class Withdrawal extends Transaction {
       Screen screen = getScreen(); // get screen reference
 
       // array of amounts to correspond to menu numbers
-      int amounts[] = { 0, 20, 40, 60, 100, 200 };
+      int amounts[] = { 0, 100, 500, 1000, 2000, 5000 };
 
       // loop while no valid choice has been made
       while (userChoice == 0) {
          // display the menu
          screen.displayMessageLine("\nWithdrawal Menu:");
-         screen.displayMessageLine("1 - $20");
-         screen.displayMessageLine("2 - $40");
-         screen.displayMessageLine("3 - $60");
-         screen.displayMessageLine("4 - $100");
-         screen.displayMessageLine("5 - $200");
-         screen.displayMessageLine("6 - Cancel transaction");
-         screen.displayMessage("\nChoose a withdrawal amount: ");
+         screen.displayMessageLine("1 - HKD 100");
+         screen.displayMessageLine("2 - HKD 500");
+         screen.displayMessageLine("3 - HKD 1000");
+         screen.displayMessageLine("4 - HKD 2000");
+         screen.displayMessageLine("5 - HKD 5000");
+         screen.displayMessageLine("6 - Custom amount");
+         screen.displayMessageLine("7 - Cancel transaction");
 
-         int input = keypad.getInput(); // get user input through keypad
+         int input = keypad.getInput(
+               "\nChoose a withdrawal amount: ",
+               "\nPlease enter a valid selection.\n"); // get user input through keypad
 
          // determine how to proceed based on the input value
          switch (input) {
@@ -108,17 +111,41 @@ public class Withdrawal extends Transaction {
             case 5:
                userChoice = amounts[input]; // save user's choice
                break;
+            case CUSTOM: // the user chose to enter a custom amount
+               userChoice = inputAmount(); // save user's choice
+               break;
             case CANCELED: // the user chose to cancel
                userChoice = CANCELED; // save user's choice
                break;
             default: // the user did not enter a value from 1-6
                screen.displayMessageLine(
-                     "\nIvalid selection. Try again.");
+                     "\nInvalid selection. Try again.");
          } // end switch
       } // end while
 
       return userChoice; // return withdrawal amount or CANCELED
    } // end method displayMenuOfAmounts
+
+   private int inputAmount() {
+      Screen screen = getScreen(); // get screen reference
+
+      int input = keypad.getInput(
+            "\nEnter a withdrawal amount in HKD (multiple of 100, or 0 to cancel): ",
+            "\nPlease enter a valid amount.\n"); // get user input through keypad
+
+      if (input == 0) {
+         return CANCELED; // return CANCELED
+      }
+
+      // check whether the user is withdrawing a multiple of 100
+      if (!(input % 100 == 0)) {
+         screen.displayMessageLine(
+               "\nPlease enter a valid amount." + "\n\n" +
+                     "This ATM only dispenses HKD 100, 500, or 1000 banknotes.");
+         inputAmount(); // recursively call inputAmount() until a valid amount is entered
+      }
+      return input;
+   }
 } // end class Withdrawal
 
 /**************************************************************************

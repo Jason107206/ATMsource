@@ -1,20 +1,50 @@
 
 // Keypad.java
 // Represents the keypad of the ATM
-import java.util.Scanner; // program uses Scanner to obtain user input
+import java.util.Scanner; // program uses Scanner to obtain user scanner
 
 public class Keypad {
-   private Scanner input; // reads data from the command line
+   private Scanner scanner; // reads data from the command line
+   private Screen screen; // reference to the ATM's screen
 
    // no-argument constructor initializes the Scanner
    public Keypad() {
-      input = new Scanner(System.in);
+      scanner = new Scanner(System.in);
+      screen = new Screen(); // create screen
    } // end no-argument Keypad constructor
 
    // return an integer value entered by user
-   public int getInput() {
-      return input.nextInt(); // we assume that user enters an integer
+   public int getInput(String prompt, String errorMessage) {
+      int input = -1; // initialize to invalid value
+      while (input < 0) {
+         screen.displayMessage(prompt);
+
+         if (!scanner.hasNextInt()) {
+            screen.displayMessage(errorMessage);
+            scanner.next(); // Discard the current non-integer input
+            continue; // Skip the remaining parts of code in the method
+         }
+
+         input = scanner.nextInt();
+      }
+      return input;
    } // end method getInput
+
+   public double getDoubleInput(String message, String errorMessage) {
+      double input = -1.0; // initialize to invalid value
+      while (input < 0) {
+         screen.displayMessage(message);
+
+         if (!scanner.hasNextDouble()) {
+            screen.displayMessage(errorMessage);
+            scanner.next(); // Discard the current non-double input
+            continue; // Skip the remaining parts of code in the method
+         }
+
+         input = scanner.nextDouble();
+      }
+      return input;
+   }
 } // end class Keypad
 
 /**************************************************************************

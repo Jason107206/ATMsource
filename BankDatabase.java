@@ -7,8 +7,8 @@ public class BankDatabase {
    // no-argument BankDatabase constructor initializes accounts
    public BankDatabase() {
       accounts = new Account[2]; // just 2 accounts for testing
-      accounts[0] = new Account(12345, 54321, 1000.0, 1200.0);
-      accounts[1] = new Account(98765, 56789, 200.0, 200.0);
+      accounts[0] = new SavingsAccount(12345, 54321, 1000.0, 1200.0);
+      accounts[1] = new ChequeAccount(98765, 56789, 200.0, 200.0);
    } // end no-argument BankDatabase constructor
 
    // retrieve Account object containing specified account number
@@ -34,7 +34,11 @@ public class BankDatabase {
          return userAccount.validatePIN(userPIN);
       else
          return false; // account number not found, so return false
-   } // end method authenticateUser
+   }// end method authenticateUser
+
+   public boolean accountExists(int accountNumber) {
+      return getAccount(accountNumber) != null;
+   }
 
    // return available balance of Account with specified account number
    public double getAvailableBalance(int userAccountNumber) {
@@ -55,6 +59,11 @@ public class BankDatabase {
    public void debit(int userAccountNumber, double amount) {
       getAccount(userAccountNumber).debit(amount);
    } // end method debit
+
+   public void transfer(int sender, int receipent, double amount) {
+      getAccount(sender).debit(amount);
+      getAccount(receipent).credit(amount);
+   }
 } // end class BankDatabase
 
 /**************************************************************************
