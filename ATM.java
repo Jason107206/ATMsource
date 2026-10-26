@@ -108,7 +108,7 @@ public class ATM {
       screen.displayMessageLine("4 - Exit\n");
       return keypad.getInput(
             "Enter a choice: ",
-            "\nPlease enter a valid selection.\n"); // return user's selection
+            "\nPlease enter a valid selection.\n\n"); // return user's selection
       // return user's selection
    } // end method displayMainMenu
 
