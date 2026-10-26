@@ -60,7 +60,7 @@ public class ATM {
       } // end if
       else
          screen.displayMessageLine(
-               "Invalid account number or PIN. Please try again.");
+               "\nInvalid account number or PIN. Please try again.");
    } // end method authenticateUser
 
    // display the main menu and perform transactions

@@ -14,10 +14,10 @@ public class Keypad {
    } // end no-argument Keypad constructor
 
    // return an integer value entered by user
-   public int getInput(String prompt, String errorMessage) {
+   public int getInput(String message, String errorMessage) {
       int input = -1; // initialize to invalid value
       while (input < 0) {
-         screen.displayMessage(prompt);
+         screen.displayMessage(message);
 
          if (!scanner.hasNextInt()) {
             screen.displayMessage(errorMessage);
