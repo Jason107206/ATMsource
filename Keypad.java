@@ -41,7 +41,21 @@ public class Keypad {
             continue; // Skip the remaining parts of code in the method
          }
 
-         input = scanner.nextDouble();
+         // Read as text to check decimal places before conversion
+         String text = scanner.next();
+
+         if (!text.matches("\\d+(\\.\\d{1})?")) {
+            screen.displayMessage(errorMessage);
+            continue;
+         }
+
+         input = Double.parseDouble(text);
+
+         // Reject non-finite values
+         if (!Double.isFinite(input)) {
+            screen.displayMessage(errorMessage);
+            input = -1.0;
+         }
       }
       return input;
    }

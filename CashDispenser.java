@@ -20,40 +20,40 @@ public class CashDispenser {
     public void dispenseCash(int amount) {
         int amountToBeDispensed = amount;
 
-        int hkd1000BanknotesRequired = amountToBeDispensed / 1000;
+        int hkd1000BanknotesRequired = Math.min(amountToBeDispensed / 1000, hkd1000Count);
         hkd1000Count -= hkd1000BanknotesRequired;
-        amountToBeDispensed = amountToBeDispensed % 1000;
+        amountToBeDispensed = amountToBeDispensed - (hkd1000BanknotesRequired * 1000);
 
-        int hkd500BanknotesRequired = amountToBeDispensed / 500;
+        int hkd500BanknotesRequired = Math.min(amountToBeDispensed / 500, hkd500Count);
         hkd500Count -= hkd500BanknotesRequired;
-        amountToBeDispensed = amountToBeDispensed % 500;
+        amountToBeDispensed = amountToBeDispensed - (hkd500BanknotesRequired * 500);
 
-        int hkd100BanknotesRequired = amountToBeDispensed / 100;
+        int hkd100BanknotesRequired = Math.min(amountToBeDispensed / 100, hkd100Count);
         hkd100Count -= hkd100BanknotesRequired;
-        amountToBeDispensed = amountToBeDispensed % 100;
+        amountToBeDispensed = amountToBeDispensed - (hkd100BanknotesRequired * 100);
     }
 
     // indicates whether cash dispenser can dispense desired amount
     public boolean isSufficientCashAvailable(int amount) {
         int amountToBeDispensed = amount;
 
-        int hkd1000BanknotesRequired = amountToBeDispensed / 1000;
+        int hkd1000BanknotesRequired = Math.min(amountToBeDispensed / 1000, hkd1000Count);
         if (hkd1000BanknotesRequired > hkd1000Count) {
             return false;
         }
-        amountToBeDispensed = amountToBeDispensed % 1000;
+        amountToBeDispensed = amountToBeDispensed - (hkd1000BanknotesRequired * 1000);
 
-        int hkd500BanknotesRequired = amountToBeDispensed / 500;
+        int hkd500BanknotesRequired = Math.min(amountToBeDispensed / 500, hkd500Count);
         if (hkd500BanknotesRequired > hkd500Count) {
             return false;
         }
-        amountToBeDispensed = amountToBeDispensed % 500;
+        amountToBeDispensed = amountToBeDispensed - (hkd500BanknotesRequired * 500);
 
-        int hkd100BanknotesRequired = amountToBeDispensed / 100;
+        int hkd100BanknotesRequired = Math.min(amountToBeDispensed / 100, hkd100Count);
         if (hkd100BanknotesRequired > hkd100Count) {
             return false;
         }
-        amountToBeDispensed = amountToBeDispensed % 100;
+        amountToBeDispensed = amountToBeDispensed - (hkd100BanknotesRequired * 100);
 
         return amountToBeDispensed == 0;
     } // end method isSufficientCashAvailable

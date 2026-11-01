@@ -128,22 +128,27 @@ public class Withdrawal extends Transaction {
 
    private int inputAmount() {
       Screen screen = getScreen(); // get screen reference
+      int input;
 
-      int input = keypad.getInput(
-            "\nEnter a withdrawal amount in HKD (multiple of 100, or 0 to cancel): ",
-            "\nPlease enter a valid amount.\n"); // get user input through keypad
+      while (true) {
+         input = keypad.getInput(
+               "\nEnter a withdrawal amount in HKD (multiple of 100, or 0 to cancel): ",
+               "\nPlease enter a valid amount.\n"); // get user input through keypad
 
-      if (input == 0) {
-         return CANCELED; // return CANCELED
-      }
+         if (input == 0) {
+            break;
+         }
 
-      // check whether the user is withdrawing a multiple of 100
-      if (!(input % 100 == 0)) {
+         // check whether the user is withdrawing a multiple of 100
+         if (input % 100 == 0) {
+            break;
+         }
+
          screen.displayMessageLine(
                "\nPlease enter a valid amount." + "\n\n" +
                      "This ATM only dispenses HKD 100, 500, or 1000 banknotes.");
-         inputAmount(); // recursively call inputAmount() until a valid amount is entered
       }
+
       return input;
    }
 } // end class Withdrawal
